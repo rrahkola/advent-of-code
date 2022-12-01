@@ -14,6 +14,7 @@ const cli = meow(
     Runs a piece of advent-of-code programming.
 
     Options            Default
+      --year                                    If entered, runs the code from that year in the archive
       --day            <current_date>           Runs the code in the directory matching prefix
       --part           1                        Picks the path for the program (1 or 2)
       --input -i       example.txt              Relative filepath to be used as input
@@ -34,6 +35,10 @@ const cli = meow(
 `,
   {
     flags: {
+      year: {
+        type: 'string',
+        default: ''
+      },
       day: {
         type: 'string',
         default: ''
@@ -78,6 +83,7 @@ logger.debug('Using debug mode')
 
 const config = {
   execute: {
+    relativeDir: cli.flags.year ? `archive/${cli.flags.year}` : '.',
     prefix: cli.flags.day || `dec${now.getDate().toString().padStart(2, '0')}`,
     input: cli.flags.input,
     output: (result) => `answer-${result}.txt`
@@ -90,8 +96,8 @@ const config = {
 }
 
 // Finds the directory with the given prefix, or errors if duplicates are found
-export async function findDirWithPrefix(prefix) {
-  const __dirname = new URL('.', import.meta.url).pathname
+export async function findDirWithPrefix(prefix, relativeDir) {
+  const __dirname = new URL(relativeDir, import.meta.url).pathname
   const entries = await fs.readdir(__dirname)
   const rootPaths = []
   for (const entry of entries) {
@@ -142,7 +148,7 @@ async function main(config, logger) {
   const { execute, transform, program: programConfig } = config
   logger.debug({ config }, 'using config')
 
-  const rootPath = await findDirWithPrefix(execute.prefix)
+  const rootPath = await findDirWithPrefix(execute.prefix, execute.relativeDir)
   logger.debug({ rootPath }, `found directory with prefix ${execute.prefix}`)
   const program = await import(path.join(rootPath, 'index.js'))
   const input = await fs.readFile(path.join(rootPath, execute.input), 'utf8')
