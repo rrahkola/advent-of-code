@@ -14,7 +14,7 @@ export default function * pickPart (input, config) {
     'Must provide data as array of strings, use options "-t lines"'
   )
   const { part } = config
-  assert(part <= 2, 'Valid parts are 1 or 2')
+  assert([1, 2].includes(part), 'Valid parts are 1 or 2')
   const data = interpret(input)
   if (config.showIntermediate) yield inspect(data)
   if (part === 2) {

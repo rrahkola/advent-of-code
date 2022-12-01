@@ -11,5 +11,7 @@ npm link
 # run it!
 npx aoc --day dec01 -t arrays -t integer --part 2
 # run it on a previous year
-npx aoc --year 2021 dec01 -t lines -t integer -v
+npx aoc --year 2021 --day dec01 -t lines -t integer -v
+# start a new AoC day (copies templates/):
+npm run newDay dec02
 ```

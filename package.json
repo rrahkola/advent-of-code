@@ -12,7 +12,8 @@
   "exports": "./cli.js",
   "main": "cli.js",
   "scripts": {
-    "test": "echo 'Howdy'"
+    "test": "echo 'Howdy'",
+    "newDay": "cp -a templates"
   },
   "repository": {
     "type": "git",
