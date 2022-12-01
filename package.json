@@ -7,7 +7,7 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "bin": {
-    "aoc-2022": "./cli.js"
+    "aoc": "./cli.js"
   },
   "exports": "./cli.js",
   "main": "cli.js",
