@@ -39,13 +39,13 @@ export default function* pickPart(input, config) {
   )
   const { part } = config
   assert([1, 2].includes(part), 'Valid parts are 1 or 2')
-  if (config.showIntermediate) yield inspect(data)
   if (part === 1) {
     // Find the total score of the rounds if X=Rock, Y=Paper, Z=Scissors
     for (const result of sumRounds(input, config)) yield result
   } else {
     // Find the total score of the rounds if X=Lose, Y=Draw, Z=Win
     const data = convertToRoundScores(input)
+    if (config.showIntermediate) yield inspect(data)
     for (const result of sumRounds(data, config)) yield result
   }
 }

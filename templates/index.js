@@ -17,9 +17,11 @@ export default function * pickPart (input, config) {
   assert([1, 2].includes(part), 'Valid parts are 1 or 2')
   const data = interpret(input)
   if (config.showIntermediate) yield inspect(data)
-  if (part === 2) {
+  if (part === 1) {
+    // Find answer for part 1
     for (const result of part1(data, config)) yield result
   } else {
+    // Find answer for part 2
     for (const result of part1(data, config)) yield result
   }
 }
