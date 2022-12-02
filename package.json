@@ -13,7 +13,8 @@
   "main": "cli.js",
   "scripts": {
     "test": "echo 'Howdy'",
-    "newDay": "cp -a templates"
+    "newDay": "cp -a templates",
+    "clean": "rm -f */answer-*.txt archive/*/*/answer-*.txt"
   },
   "repository": {
     "type": "git",
