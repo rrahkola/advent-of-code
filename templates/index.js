@@ -19,9 +19,9 @@ export default function * pickPart (input, config) {
   if (config.showIntermediate) yield inspect(data)
   if (part === 1) {
     // Find answer for part 1
-    for (const result of part1(data, config)) yield result
+    for (const result of part1(data, config)) yield inspect(result)
   } else {
     // Find answer for part 2
-    for (const result of part1(data, config)) yield result
+    for (const result of part1(data, config)) yield inspect(result)
   }
 }

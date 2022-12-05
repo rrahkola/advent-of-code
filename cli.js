@@ -9,7 +9,7 @@ import pino from 'pino'
 const cli = meow(
   `
     Usage
-      $ npx aoc-2022 -t lines -t integer --day dec01 -i input.txt
+      $ npx aoc -t lines -t integer --day dec01 -i input.txt
 
     Runs a piece of advent-of-code programming.
 
