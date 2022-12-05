@@ -78,22 +78,15 @@ export default function * pickPart (input, config) {
   assert([1, 2].includes(part), 'Valid parts are 1 or 2')
   const data = parseStacks(input)
   if (config.showIntermediate) yield inspect(data)
+  let result
   if (part === 1) {
-    // Find top crate for each stack, ignoring empty stacks
-    let result
+    // Crates are moved one at a time, reversing order
     config.oneAtATime = true
-    for (const value of craneManipulations(data, config)) {
-      result = value
-      yield inspect(result)
-    }
-    yield result.stacks.map(arr => arr.pop()).filter(Boolean).join('')
-  } else {
-    // Find top crate for each stack, retaining order of moved crates
-    let result
-    for (const value of craneManipulations(data, config)) {
-      result = value
-      yield inspect(result)
-    }
-    yield result.stacks.map(arr => arr.pop()).filter(Boolean).join('')
   }
+  // Find top crate for each stack, ignoring empty stacks
+  for (const value of craneManipulations(data, config)) {
+    result = value
+    yield inspect(result)
+  }
+  yield result.stacks.map(arr => arr.pop()).filter(Boolean).join('')
 }
