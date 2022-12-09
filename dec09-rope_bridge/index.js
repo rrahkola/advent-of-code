@@ -96,6 +96,5 @@ export default function * pickPart (input, config) {
   }
   const serialPositions = result[config.numKnots].map(el => `x:${el.x},y:${el.y}`)
   if (config.showIntermediate) yield inspect(serialPositions)
-  const uniquePositions = [...new Set(serialPositions)]
-  yield inspect({ uniquePositions: uniquePositions.length })
+  yield inspect({ uniquePositions: new Set(serialPositions).size })
 }
