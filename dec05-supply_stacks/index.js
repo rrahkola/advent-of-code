@@ -47,7 +47,7 @@ function parseStacks (rawInput) {
   const stackRegex = new RegExp(/\[(\w)\]/, 'g')
   const stepRegex = new RegExp(/^move (?<top>\d+) from (?<from>\d+) to (?<to>\d+)$/)
   const input = rawInput.split('\n')
-  const data = { stacks: Array(10).fill('').map(el => []), steps: [] } // guess 100 stacks for now
+  const data = { stacks: Array(10).fill('').map(el => []), steps: [] } // guess 10 stacks for now
   for (const line of input) {
     if (line.match(/^\s*\[/)) {                 // matches a stack line
       let match = stackRegex.exec(line)

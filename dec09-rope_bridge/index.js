@@ -75,6 +75,7 @@ function interpret (input) {
 }
 
 export default function * pickPart (input, config) {
+  let result
   assert(
     Array.isArray(input) && input.length > 0,
     'Must provide data as array of strings, use options "-t lines"'
@@ -89,11 +90,7 @@ export default function * pickPart (input, config) {
     config.numKnots = 10
   }
   // Find the number of unique positions for the rope's tail
-  let result
-  for (const output of trackPositions(data.headPositions, config)) {
-    result = output
-    yield inspect(result)
-  }
+  for (const output of trackPositions(data.headPositions, config)) yield inspect(output), result = output
   const serialPositions = result[config.numKnots].map(el => `x:${el.x},y:${el.y}`)
   if (config.showIntermediate) yield inspect(serialPositions)
   yield inspect({ uniquePositions: new Set(serialPositions).size })
