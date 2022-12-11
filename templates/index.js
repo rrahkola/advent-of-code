@@ -15,6 +15,7 @@ export default function* pickPart(input, config) {
     'Must provide data as array of strings, use options "-t lines"'
   )
   assert([1, 2].includes(config.part), 'Valid parts are 1 or 2')
+
   const data = interpret(input)
   if (config.showIntermediate) yield inspect(data)
   if (config.part === 1) {
