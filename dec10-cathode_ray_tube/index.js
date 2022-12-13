@@ -56,14 +56,7 @@ export default function* pickPart(input, config) {
     config.displayWidth = 40
     for (const output of attachSprite(data, config)) yield inspect(output), result = output
     const pixels = result.map(el => el.pixel)
-    const display = [
-      pixels.slice(0, 40),
-      pixels.slice(40, 80),
-      pixels.slice(80, 120),
-      pixels.slice(120,160),
-      pixels.slice(160,200),
-      pixels.slice(200,240)
-    ].map(el => el.join(''))
-    yield inspect(display)
+    for (const idx of [200, 160, 120, 80, 40]) pixels.splice(idx, 0, '\n')
+    yield pixels.join('')
   }
 }
