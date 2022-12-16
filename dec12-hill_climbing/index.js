@@ -9,7 +9,6 @@ function toNode (char, x, y) {
 
 /* Implements an a* search algorithm on an array of connected nodes.
  * cf. https://en.wikipedia.org/wiki/A*_search_algorithm
- *
  */
 function* searchNodes(nodes, config) {
   const { showIntermediate, openSet, onlyStart } = config
@@ -43,14 +42,8 @@ function* searchNodes(nodes, config) {
  *  d d o n m
  *  f e i i l
  *  g h i j k
- * Returns list of nodes: [{ elevation, x, y, toStart, toEnd, fScore, next, previous }]
- * where toStart, toEnd, fScore, next, and previous are used in A* search algorithm;
- * toStart is the current minimum distance (modified) from the start
- * toEnd is the distance (deltaX + deltaY + 3 * deltaElevation) to the end (E)
- * fScore is quantity (toStart + toEnd), used for ranking nodes
- * next is the list of allowable neighboring nodes
- * previous is the path of nodes from start to (current - 1)
- * and options is the allowable neighboring nodes
+ * Returns list of nodes: [{ elevation, x, y, toStart, toEnd, next, previous }]
+ * where toStart, toEnd, next, and previous are used in A* search algorithm
  */
 function plot(input) {
   const terrain = []
@@ -62,12 +55,13 @@ function plot(input) {
   }
   const end = terrain.filter(el => el.end)[0]
   const start = terrain.filter(el => el.start)[0]
-  // Gather toEnd, options for each node
+  // Gather a* metrics for each node
   for (const node of terrain) {
     // g(n) -- how much terrain from start, defaults +Infinity
     node.toStart = (node === start) ? 0 : Infinity
     // h(n) -- estimate of how much terrain is left to go, taking elevation into account
     node.toEnd = Math.abs(end.x - node.x) + Math.abs(end.y - node.y) + 3 * (end.elevation - node.elevation)
+    // neighbors
     node.next = terrain.filter(el => {
       if (el.x !== node.x && el.y !== node.y) return false // must be same column/row
       if (Math.abs(el.x - node.x) > 1 || Math.abs(el.y - node.y) > 1) return false  // must be neighbors
@@ -75,8 +69,10 @@ function plot(input) {
       if (el === node) return false
       return true
     })
+    node.neighbors = node.next.length // debug only, nice to have a count of neighbors
+    // minimal path from start to previous node
     node.previous = []
-    node.neighbors = node.next.length
+
   }
   return terrain
 }
