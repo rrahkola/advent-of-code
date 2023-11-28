@@ -1,11 +1,15 @@
 import { strict as assert } from 'assert'
 import { inspect } from 'util'
 
+/* Given an array of input: ['', ...]
+ */
 function* part1(data, config) {
   const { showIntermediate } = config
   yield 'Howdy'
 }
 
+/* Given an array of input: ['', ...]
+ */
 function interpret(input) { return input }
 
 export default function* pickPart(input, config) {

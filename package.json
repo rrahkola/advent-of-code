@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/rrahkola/advent-of-code-2022#readme",
   "dependencies": {
+    "@datastructures-js/priority-queue": "^6.3.0",
     "dev-null": "^0.1.1",
     "es-main": "^1.2.0",
     "lodash": "^4.17.21",
