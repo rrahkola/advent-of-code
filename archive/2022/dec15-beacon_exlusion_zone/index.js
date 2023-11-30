@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert'
 import { inspect } from 'util'
-import { default as plotGrid } from '../util/plotGrid.js'
+import { default as plotGrid } from '../../../util/plotGrid.js'
 
 /* Given { sensors, beacons },
  * Returns the list of coordinates which are not excluded by nearest beacons.
