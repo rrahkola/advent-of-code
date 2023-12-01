@@ -65,4 +65,4 @@ export default function setupGrid (input) {
 
 setupGrid.GridPoint = GridPoint
 
-export function findPath (node, end, )
+export function findPath (node, end ) {}
