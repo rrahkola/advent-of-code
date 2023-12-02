@@ -109,7 +109,7 @@ export function walkFolds (grid, instructions) {
       // Re-define 'moveUp', 'moveDown', 'moveLeft', or 'moveRight' on current node
       node[origDirection] = function (n = 1, force = false) {
         const next = translate(this, origDirection)
-        console.log('translating', { ...this.status(), origDirection, newDirection, n, next: JSON.stringify(next.status()) })
+        // console.log('translating', { ...this.status(), origDirection, newDirection, n, next: JSON.stringify(next.status()) })
         if (next.isWall && !force) return this
         next.direction = newDirection
         return next.walk(n - 1, force)
