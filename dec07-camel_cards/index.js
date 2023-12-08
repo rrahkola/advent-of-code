@@ -32,7 +32,9 @@ const modifyType = {
   'high-card': ['high-card', 'one-pair'], // 0 or 1
 }
 
-/* Given an array of input: ['', ...]
+/* Given an array of hands: [{ hand, bid, type }],
+ * sorts the hands, first by type, then by individual card
+ * lowest rank is first
  */
 function* rankHands(hands, config) {
   const { showIntermediate, withJokers } = config
@@ -48,7 +50,8 @@ function* rankHands(hands, config) {
   yield hands.map((el, rank) => ({ ...el, rank }))
 }
 
-/* Given an array of input: ['', ...]
+/* Given an array of input: ['32T3K 765', ...]
+ * yields an array of hands: [{ hand, bid, type }]
  */
 function interpret(input) {
   const hands = []
