@@ -72,6 +72,7 @@ const cli = meow(
   }
 )
 
+process.env.TZ = 'America/New_York' // new puzzles open midnight EST
 const now = new Date()
 const logger = pino({ level: 'trace' },
   pino.multistream([
