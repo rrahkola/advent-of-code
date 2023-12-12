@@ -1,10 +1,21 @@
 import { strict as assert } from 'node:assert'
 // import { createInterface } from 'node:readline'
 import { inspect } from 'util'
-import { Blizzard, PartyState, Walk } from './basin.js'
+import { Blizzards } from './basin.js'
 // const readline = createInterface({ input: process.stdin, output: process.stdout })
 import getPrompt from 'prompt-sync'
 const prompt = getPrompt()
+
+function nextStates(states, { blizzards, basin }) {
+  const occupied = blizzards.occupied()
+  const moves = ['up', 'down', 'left', 'right', 'stay']
+  const next = new Set()
+  for (const key of states.keys()) {
+    const node = basin[key]
+    moves.map(dir => node[dir] || []).flat().forEach(dirKey => (occupied.includes(dirKey)) ? null : next.add(dirKey))
+  }
+  return next
+}
 
 /* Given collections of basin positions and blizzards,
  * performs a time evolution of possible board states,
@@ -13,17 +24,18 @@ const prompt = getPrompt()
 function* shortestWalk({ basin, blizzards, board }, config) {
   const { showIntermediate } = config
   const { start, end } = board
-  let possible = {[start]: JSON.parse(start)}
-  if (showIntermediate) console.log({ possible })
+  let time
+  let possible = new Set([start])
+  if (showIntermediate) console.log('Start:', possible)
   while(true) {
-    let next_possible = PartyState.nextStates(config.time, possible, { blizzards, basin })
-    if (showIntermediate) yield { time: config.time, possible, next_possible }
+    time = blizzards.tick()
+    let next_possible = nextStates(possible, { blizzards, basin })
+    if (showIntermediate) yield { start, end, possible, next_possible, occupied: blizzards.occupied() }
     possible = next_possible
-    if (Object.keys(next_possible).includes(end)) break
-    if (Object.keys(next_possible).length === 0) break
-    config.time++
+    if (next_possible.has(end)) break
+    if (next_possible.size === 0) break
   }
-  yield { time: config.time } //, path: possible[end].path }
+  yield { time }
 }
 
 /* Given an array of input ['#S#########', '#....>....#', ...],
@@ -37,19 +49,25 @@ function interpret(input) {
   const board = {}
   const borders = {}
   const basin = {}
-  const blizzards = []
   board.width = input[0].length
   board.height = input.length
+  const blizzards = new Blizzards({ width: board.width, height: board.height })
   const fillBasin = (char, col, row) => {
-    const key = JSON.stringify({ col, row })
-    if (/[v^<>]/.exec(char)) blizzards.push(new Blizzard(char, col, row, board.width, board.height))
-    if (char !== '#') basin[key] = { char: '.', col, row }
-    else borders[key] = { char, col, row }
-    if (/[SE]/.exec(char)) basin[key] = { char, col, row }
+    const key = `${col},${row}` // JSON.stringify({ col, row })
+    if (/[v^<>]/.exec(char)) blizzards.add(char, col, row)
+    if (char !== '#') basin[key] = { key, char: '.', col, row }
+    else borders[key] = { key, char, col, row }
+    if (/[SE]/.exec(char)) basin[key] = { key, char, col, row }
     if (char === 'S') board.start = key
     if (char === 'E') board.end = key
   }
   input.forEach((line, row) => line.split('').forEach((char, col) => fillBasin(char, col, row)))
+  // 2nd pass: connect basin nodes
+  for (const node of Object.values(basin)) {
+    const { row, col } = node
+    const [up, down, left, right, stay] = [[row-1,col], [row+1,col], [row,col-1], [row,col+1], [row, col]].map(p => (basin[`${p[1]},${p[0]}`]) ? `${p[1]},${p[0]}` : undefined )
+    Object.assign(node, { up, down, left, right, stay })
+  }
   return { basin, blizzards, borders, board }
 }
 
@@ -62,7 +80,6 @@ export default function* pickPart(input, config) {
   assert([1, 2].includes(config.part), 'Valid parts are 1 or 2')
 
   const data = interpret(input)
-  config.time = 1
   if (config.showIntermediate) yield inspect(data)
   // Find answer for part 1
   for (const output of shortestWalk(data, config)) yield inspect(output), result = output
