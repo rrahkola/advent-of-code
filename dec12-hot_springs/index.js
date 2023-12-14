@@ -67,8 +67,8 @@ const countPerms = memoize((line, groups) => {
       const substr = line.slice(0, next)
       return (/\./.exec(substr)) ? 0 : (/#/.exec(line[next])) ? 0 : countPerms(line.slice(next+1), remaining)
     case '?':
-      const [first, second] = ['.', '#'].map(char => `${char}${line.slice(1)}`)
-      return countPerms(first, groups) + countPerms(second, groups)
+      const [withPeriod, withHash] = ['.', '#'].map(char => `${char}${line.slice(1)}`)
+      return countPerms(withPeriod, groups) + countPerms(withHash, groups)
   }
 })
 

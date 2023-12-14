@@ -51,6 +51,9 @@ function interpret(input) {
   const basin = {}
   board.width = input[0].length
   board.height = input.length
+  // Default start/end, see note below
+  board.start = '1,0'
+  board.end = `${board.width-2},${board.height-1}`
   const blizzards = new Blizzards({ width: board.width, height: board.height })
   const fillBasin = (char, col, row) => {
     const key = `${col},${row}` // JSON.stringify({ col, row })
@@ -58,6 +61,7 @@ function interpret(input) {
     if (char !== '#') basin[key] = { key, char: '.', col, row }
     else borders[key] = { key, char, col, row }
     if (/[SE]/.exec(char)) basin[key] = { key, char, col, row }
+    // Below is based on a modified input w/ 'S' and 'E'
     if (char === 'S') board.start = key
     if (char === 'E') board.end = key
   }
