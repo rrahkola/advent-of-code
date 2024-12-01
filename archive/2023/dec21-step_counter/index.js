@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert'
 import { inspect } from 'util'
-import plotGrid from '../util/plotGrid.js'
+import plotGrid from '../../../util/plotGrid.js'
 
 const toKey = ({ x, y }) => `(${x},${y})`
 const move = (garden = {}) => ({

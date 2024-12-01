@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert'
 import { inspect } from 'util'
-import { checkAlignment } from '../util/cycles.js'
+import { checkAlignment } from '../../../util/cycles.js'
 
 const PULSE_REGEX = /^(?<emit>\w+) -(?<level>(high|low))-> (?<rec>\w+)$/ // 'a -high-> b'
 
