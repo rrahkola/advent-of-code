@@ -4,7 +4,7 @@
   "description": "Solutions to Advent-of-Code 2022",
   "type": "module",
   "engines": {
-    "node": "^15.0.0 || >=16.0.0"
+    "node": "^20.0.0 || >=22.0.0"
   },
   "bin": {
     "aoc": "./cli.js"
