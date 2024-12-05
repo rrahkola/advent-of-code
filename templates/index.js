@@ -1,5 +1,7 @@
 import { strict as assert } from 'assert'
 import { inspect } from 'util'
+inspect.defaultOptions.depth = null
+inspect.defaultOptions.maxArrayLength = null
 
 /*  Given <output of interpret>,
  *  yields
@@ -23,7 +25,7 @@ export default function* pickPart(input, config) {
   assert([1, 2].includes(config.part), 'Valid parts are 1 or 2')
 
   const data = interpret(input)
-  if (config.showIntermediate) yield inspect(data, { depth: null, maxArrayLength: null })
+  if (config.showIntermediate) yield inspect(data)
   if (config.part === 1) {
     // Find answer for part 1
     for (const output of part1(data, config)) yield inspect(output), result = output

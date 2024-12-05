@@ -1,8 +1,8 @@
 import { strict as assert } from 'assert'
 import { inspect } from 'util'
 
-/*  Given <output of interpret>,
- *  yields
+/*  Given an array of { a, b, c } objects, where `a` and `b` are numbers and `c` is a boolean toggle,
+ *  yields the sum of multiplying all the pairs of numbers.
  */
 function* multiplyPairs(matches, config) {
   const { showIntermediate, ignoreToggles = true } = config
@@ -14,7 +14,7 @@ function* multiplyPairs(matches, config) {
 }
 
 /*  Given an array of input: ['<some_text>mul(123,4)<more_text>', ...],
- *  identifies all the `mul(a,b)` expressions and returns matching results.
+ *  identifies and parses all the `mul(a,b)` expressions and returns matching results.
  *  Also keeps track of `do()` and `don't()` instructions to enable/disable the `mul` operations.
  */
 function interpret(input) {
