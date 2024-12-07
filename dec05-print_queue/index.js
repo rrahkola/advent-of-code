@@ -16,8 +16,7 @@ const checkOrdering = rules => pageList => {
 }
 
 /*  Given rules and array of page-lists,
- *  yields the page-lists which are correctly ordered,
- *  then yields the middle page for each list.
+ *  separates the ordered from unordered lists.
  */
 function* binPageLists({ rules, pages }, config) {
   const { showIntermediate } = config
