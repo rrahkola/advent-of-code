@@ -5,10 +5,10 @@ inspect.defaultOptions.maxArrayLength = null
 
 const twoOps = (a, b) => [a + b, a * b]
 const threeOps = (a, b) => [a + b, a * b, Number.parseInt('' + a + b, 0)]
-function compute (start, ops, operands) {
+function compute (start, ops, operands, goal) {
   if (operands.length === 0) return [start]
-  const [first, ...remaining] = operands
-  return ops(start, first).flatMap(el => compute(el, ops, remaining) || [])
+  const [term, ...remaining] = operands
+  return ops(start, term).flatMap(el => (el <= goal) ? compute(el, ops, remaining, goal) : [])
 }
 /*  Given <output of interpret>,
  *  yields
@@ -17,7 +17,7 @@ function* part1({ calibrations}, config) {
   const valid = []
   const { showIntermediate, ops } = config
   for (const { goal, operands: [start, ...remaining] } of calibrations) {
-    const totals = compute(start, ops, remaining) || []
+    const totals = compute(start, ops, remaining, goal) || []
     if (showIntermediate) console.log({ msg: `Checking ${goal}`, totals })
     if (totals.some(total => total === goal)) valid.push({ goal, operands: [start, ...remaining] })
   }
